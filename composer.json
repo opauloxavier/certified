@@ -1,0 +1,14 @@
+{
+    "name": "over/certified",
+    "description": "Certificados Automaticos",
+    "require": {
+        "phpmailer/phpmailer": "~5.2",
+        "tecnick.com/tcpdf": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Paulo Xavier",
+            "email": "contato.pauloxavier@gmail.com"
+        }
+    ]
+}
