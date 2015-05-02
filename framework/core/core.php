@@ -10,10 +10,10 @@
 	define('PROJECT_ALIAS','certified');
 
 	//mail data
-	define('MAIL_USERNAME','lojaessenciadoprazer@gmail.com');
-	define('MAIL_PASSWORD','0hz7CdWeNOJ5tADZ15Ww9w');
-	define('MAIL_FROM','noreply@essenciadoprazer.com.br');
-	define('MAIL_FROM_NAME','Loja Essência do Prazer');
+	define('MAIL_USERNAME','contato.pauloxavier@gmail.com');
+	define('MAIL_PASSWORD','X-Gbkg0cJJHK8J4qcalA2w');
+	define('MAIL_FROM','no-reply@pauloxavier.com');
+	define('MAIL_FROM_NAME','Certified - Automação de Certificados');
 
 
 	if($_SERVER['SERVER_NAME'] == 'dev.pauloxavier.com'){

@@ -14,8 +14,8 @@
 	<nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
       	<div class="col-md-12">
-        <div class="col-md-offset-2 col-md-8 pull-right">
-        	<?php headerLogin($_SESSION["logado"]);?>
+        <div class="col-md-offset-2 col-md-8 pull-right headerCode">
+        	<?php headerLogin($_SESSION['logado']);?>
 		    </div>
         </div><!--/.nav-collapse -->
       </div>
