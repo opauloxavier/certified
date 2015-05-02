@@ -3,7 +3,8 @@
     "description": "Certificados Automaticos",
     "require": {
         "phpmailer/phpmailer": "~5.2",
-        "tecnick.com/tcpdf": "dev-master"
+        "tecnick.com/tcpdf": "dev-master",
+        "ramsey/uuid": "~2.8"
     },
     "authors": [
         {

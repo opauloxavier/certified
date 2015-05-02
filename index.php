@@ -50,6 +50,18 @@
 			include_once PAGES_URL."envio.php";
 		}
 
+		elseif($_GET['to']=='evento'){
+			include_once PAGES_URL."evento.php";
+		}
+
+		elseif($_GET['to']=='import'){
+			include_once PAGES_URL."import.php";
+		}
+
+		elseif($_GET['to']=='uuid'){
+			include_once PAGES_URL."uuid.php";
+		}
+
 		else{
 			header("location:".BASE_URL);
 		}

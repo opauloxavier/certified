@@ -5,8 +5,11 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<?=ST_PATH?>css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="<?=ST_PATH?>css/bootstrap-datepicker.css" />
 	<link rel="stylesheet" type="text/css" href="<?=ST_PATH?>css/custom.css" />
 	<script type="text/javascript" src="<?=ST_PATH?>js/bootstrap.js"></script>
+	<script type="text/javascript" src="<?=ST_PATH?>js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="<?=ST_PATH?>js/custom.js"></script>
 	<link rel="shortcut icon" href="<?=ST_PATH?>img/favicon.png" type="image/x-icon">
 
 </head>

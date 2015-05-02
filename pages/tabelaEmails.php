@@ -4,6 +4,10 @@
 
 		$_SESSION['csvData'] = $array;
 		$_SESSION['csvSize'] = (count($array));
+
+			if(isset($_POST['nomeEvento']) and isset($_POST['dataEvento']) and isset($_POST['duracaoEvento']) and isset($_POST['localEvento']))
+					insereEvento($_SESSION['ID'],$_POST['nomeEvento'],$_POST['dataEvento'],$_POST['duracaoEvento'],$_POST['localEvento']);
+
 		}
 
 		else

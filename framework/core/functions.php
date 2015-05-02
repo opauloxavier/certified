@@ -12,6 +12,7 @@
 function connect_db(){
 
 		$mysqli = new mysqli(db_user, db_login, db_password, db_name);
+		mysqli_set_charset($mysqli,"utf8");
 
 		if ($mysqli->connect_errno) {
    			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
@@ -27,7 +28,7 @@ function connect_db(){
 
 		$table = db_table;
 
-		$result = mysqli_query($mysqli,"SELECT * FROM px_user WHERE email = '$email'");
+		$result = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE email = '$email'");
 
 		$num = mysqli_num_rows($result);
 
@@ -64,6 +65,48 @@ function connect_db(){
 		}
 
 	}
+
+
+	function check_double_evento($nome_evento) {
+
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE nome_evento = '$nome_evento'");
+
+		$num = mysqli_num_rows($result);
+
+		if ($num==0){
+
+			return false;
+		}
+
+		else{
+			return true;
+		}
+
+	}
+
+	function check_double_participante($nome_participante,$id_evento) {
+
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE ID_evento = '$id_evento' and nome_participante = '$nome_participante'");
+
+		$num = mysqli_num_rows($result);
+
+		if ($num==0){
+
+			return false;
+		}
+
+		else{
+			return true;
+		}
+
+	}
+
+
+
 
 		function check_Referral_True($id) {
 
@@ -234,15 +277,15 @@ function areaCadastro($logado){
 	}
 
 
-	function geraPdf($template_path=true,$autor=true,$lang=true,$orientation=true,$page_format=true){
+	function geraPdf($autor,$tituloCertificado,$subject,$keywords,$nome_evento,$nome_participante,$local_evento,$data_evento,$uuid_participante){
 		// create new PDF document
 		$pdf = new TCPDF("L", PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		// set document information
-		$pdf->SetCreator("Paulo Xavier");
-		$pdf->SetAuthor('Paulo Xavier');
-		$pdf->SetTitle('Teste Certificado');
-		$pdf->SetSubject('Gerando Certificado');
-		$pdf->SetKeywords('Certificado,Guia,Certified');
+		$pdf->SetCreator("Certified - Certificados Automatizados");
+		$pdf->SetAuthor($autor);
+		$pdf->SetTitle($tituloCertificado);
+		$pdf->SetSubject($subject);
+		$pdf->SetKeywords($keywords);
 		$pdf->SetPrintFooter(false);
 		// set default header data
 		//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, "Certificado Teste", "por Paulo", array(0,64,255), array(0,64,128));
@@ -279,7 +322,15 @@ function areaCadastro($logado){
 		// set text shadow effect
 		$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 		// Set some content to print
-		$html = file_get_contents($template_path);
+		$html = file_get_contents('framework/template/pdf/certificado.html');
+
+		$html = str_replace('%name%',$nome_participante, $html);
+		$html = str_replace('%local%', $local_evento, $html);
+		$html = str_replace('%evento%', $nome_evento, $html);
+		$html = str_replace('%data%',$data_evento, $html);
+
+		//echo $html;
+		//die();
 
 		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');
@@ -288,7 +339,7 @@ function areaCadastro($logado){
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
 		ob_end_clean();
-		$pdf->Output('example_001.pdf', 'I');
+		$pdf->Output($uuid_participante.'.pdf', 'I');
 	}
 
 	function importCSV($file_path){
@@ -303,6 +354,107 @@ function areaCadastro($logado){
 		fclose($file);
 		
 		return $data;
+	}
+
+	function uuidGen($echo=false) {
+			if($echo)
+				echo md5(uniqid(rand(), true));
+
+			return md5(uniqid(rand(), true));
+	}
+
+	function validaCertificado($uuid_evento,$uuid_participante){
+
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE uuid = '$uuid_evento'");
+		$event_data = mysqli_fetch_array($result);
+		$id_evento = $event_data['ID'];
+
+		$result2 = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE uuid_cert = '$uuid_participante' and ID_evento = '$id_evento'");
+		$participante_data = mysqli_fetch_array($result2);
+
+		if(mysqli_num_rows($result)>0 and mysqli_num_rows($result2)>0)
+			geraPdf('Marcos A. Caldas',$event_data['nome_evento'],$event_data['nome_evento'],'Evento,Certificado,Direitos Humanos,Debate',$event_data['nome_evento'],$participante_data['nome_participante'],$event_data['local_evento'],'29/09/2014',$participante_data['uuid_cert']);
+
+		else
+			echo "Erro 404";
+
+	}
+
+	function insereEvento($id_owner,$nome_evento,$data_evento,$duracao_evento,$local_evento){
+		$mysqli = connect_db();
+
+		$id_owner = $_SESSION['ID'];
+		$uuid_evento = uuidGen();
+
+		if(!check_double_evento($nome_evento)){
+
+			$result = mysqli_query($mysqli,"INSERT INTO px_eventos (`ID_owner`, `nome_evento`, `data_evento`, `tempo_evento`, `local_evento`, `uuid`) VALUES ('$id_owner', '$nome_evento', '$data_evento', '$duracao_evento', '$local_evento', '$uuid_evento')");
+
+			$result2 = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE nome_evento = '$nome_evento'");
+			$data = mysqli_fetch_array($result2);
+
+			return $data['ID'];
+		}
+
+		else
+			return false;
+
+	}
+
+
+	function insereParticipante($id_owner,$id_evento,$nome_participante,$email_participante){
+		$mysqli = connect_db();
+		$uuid_participante = uuidGen();
+
+		if(!check_double_participante($nome_participante,$id_evento)){
+			$result = mysqli_query($mysqli,"INSERT INTO px_participantes (`ID_owner`, `ID_evento`, `nome_participante`, `email_participante`, `uuid_cert`) VALUES ('$id_owner', '$id_evento', '$nome_participante', '$email_participante', '$uuid_participante')");
+
+		if($result)
+			return true;
+		else
+			return false;
+		}
+
+		else 
+			echo "Erro: Usuário já cadastrado no evento";
+	}
+
+	function sanitizeDate($data){
+		$dia = ($data[0].$data[1]);
+		$mes = ($data[3].$data[4]);
+		$ano = ($data[6].$data[7].$data[8].$data[9]);
+
+		return ($ano.'-'.$mes.'-'.$dia);
+
+	}
+
+	function reSanitizeDate($data){
+		$dia = ($data[8].$data[9]);
+		$mes = ($data[5].$data[6]);
+		$ano = ($data[0].$data[1].$data[2].$data[3]);
+
+		return ($dia.'/'.$mes.'/'.$ano);
+
+	}
+
+	function dadosEvento($id){
+
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT * FROM px_eventos WHERE id = '$id'");
+		$event_data = mysqli_fetch_array($result);
+
+		return $event_data;
+	}
+
+	function participantesEvento($id_evento){
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE ID_evento = '$id_evento'");
+
+		return $result;
 	}
 
 ?>
