@@ -29,7 +29,7 @@
 						<input type="file" class="form-control" id="nome" name="nomeFile" placeholder="Escolha seu arquivo" required="true">
 				</div>
 				<div class="form-group">
-						<button type="submit" name="submitCSV" class="btn btn-default btn-primary">Importar</button>
+						<button type="submit" name="submitCSV"style="color:white;" class="btn btn-default btn-primary">Importar</button>
 				</div>
 			</form>
 		</div>
@@ -45,7 +45,7 @@
 				    <input type="email" class="form-control" name="emailParticipante" required="true" placeholder="Digite o email">
 				</div>
 				<div class="form-group">
-						<button type="submit" name="submitParticipante" class="btn btn-default btn-primary">Inserir</button>
+						<button type="submit" name="submitParticipante" style="color:white;" class="btn btn-default btn-primary">Inserir</button>
 				</div>
 			</form>
 		</div>
@@ -80,7 +80,7 @@
 <div class="row" style="margin-bottom:10px;">
 	<div class="col-md-2 col-md-offset-3 pull-right">
 		<form class="form-horizontal" method="POST" name="formEnvio" action="<?php echo BASE_URL.'envio/'.$_GET['id_evento']; ?>">
-					<button type="submit" name="submitEnvio" class="btn btn-lg btn-success btn-block">Enviar</button>
+					<button type="submit" name="submitEnvio" style="color:white;" class="btn btn-lg btn-success btn-block">Enviar</button>
 		</form>
 	</div>
 </div>

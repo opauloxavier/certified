@@ -47,7 +47,7 @@
 					  </div>
 					  <div class="form-group">
 					    <div class="col-md-6 col-md-offset-3">
-					      <button type="submit" name="submitEvento" class="btn btn-lg btn-default btn-block">Criar Evento!</button>
+					      <button type="submit" name="submitEvento" style="color:white;" class="btn btn-lg btn-primary btn-block">Criar Evento!</button>
 					    </div>
 					  </div>
 					</form>
