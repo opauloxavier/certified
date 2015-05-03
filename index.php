@@ -61,6 +61,9 @@
 		elseif($_GET['to']=='remover'){
 			include_once PAGES_URL."remover.php";
 		}
+		elseif($_GET['to']=='inserir'){
+			include_once PAGES_URL."inserir.php";
+		}
 
 
 		else{

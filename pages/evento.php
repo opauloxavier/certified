@@ -33,6 +33,22 @@
 				</div>
 			</form>
 		</div>
+		<div class="pull-left">
+			<form class="form-inline" method="POST" action="<?php echo BASE_URL.'inserir/'.$_GET['id_evento'];?>" id="formCsv" name="formParticipante" accept-charset="utf-8" enctype="multipart/form-data">
+				<div class="form-group">
+						<label class="control-label" for="exampleInputEmail3">Nome</label>
+				    <input type="text" class="form-control" name="nomeParticipante" required="true" placeholder="Digite o email">
+				</div>
+
+				<div class="form-group">
+						<label class="control-label" for="exampleInputEmail3">E-mail</label>
+				    <input type="email" class="form-control" name="emailParticipante" required="true" placeholder="Digite o email">
+				</div>
+				<div class="form-group">
+						<button type="submit" name="submitParticipante" class="btn btn-default btn-primary">Inserir</button>
+				</div>
+			</form>
+		</div>
 	</div>
 		
 </div>

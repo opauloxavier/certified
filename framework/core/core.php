@@ -17,7 +17,7 @@
 
 
 	if($_SERVER['SERVER_NAME'] == 'dev.pauloxavier.com'){
-		define("url",$_SERVER['SERVER_NAME']."/".PROJECT_ALIAS);
+		define("url",$_SERVER['SERVER_NAME']."/".PROJECT_ALIAS."/");
 		define("db_table", "px_user");
 		define("db_user","localhost");
 		define("db_name","certified");
@@ -29,13 +29,13 @@
 
 
 	else{
-		define("url","https://www.essenciadoprazer.com.br");
+		define("url","http://www.pauloxavier.com/certified/");
 		define("db_table", "px_user");
 		define("db_user","mysql");
-		define("db_name","u527900266_share");
-		define("db_login","u527900266_admin");
+		define("db_name","u538617697_cert");
+		define("db_login","u538617697_admin");
 		define("db_password","over5574");
-		define('BASE_URL','https://www.essenciadoprazer.com.br/');
-		define('ST_PATH','https://'.$_SERVER['HTTP_HOST'].'/framework/assets/');
+		define('BASE_URL','http://www.pauloxavier.com/certified/');
+		define('ST_PATH','http://'.$_SERVER['HTTP_HOST'].'/certified/framework/assets/');
 	}
 ?>

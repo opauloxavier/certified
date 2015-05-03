@@ -1,6 +1,4 @@
-<?php if( !isset($_SESSION) ){ session_start(); }
-
-
+<?php 
 	if(isset($_GET['particip']) and isset($_GET['evento']))	
 		validaCertificado($_GET['evento'],$_GET['particip']);
 			//geraPdf('framework/template/pdf/certificado.html');

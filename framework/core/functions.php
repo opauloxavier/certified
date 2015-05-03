@@ -246,7 +246,7 @@ function areaCadastro($logado){
 
 	function enviaMail($to,$subject,$nome_evento,$data,$uuid_evento,$uuid_participante){
 
-			$url=url.'/certificado/'.$uuid_evento.'/'.$uuid_participante;
+			$url=url.'certificado/'.$uuid_evento.'/'.$uuid_participante;
 
 			$message = file_get_contents('framework/template/email/certificado.html');
 
@@ -281,8 +281,16 @@ function areaCadastro($logado){
 	}
 
 
-	function geraPdf($autor,$tituloCertificado,$subject,$keywords,$nome_evento,$nome_participante,$local_evento,$data_evento,$uuid_participante){
+	function geraPdf($content,$autor,$tituloCertificado,$subject,$keywords,$nome_evento,$nome_participante,$local_evento,$data_evento,$uuid_participante){
 		// create new PDF document
+		$html = $content;
+		//$html = "<h1>mensagem de teste</h1>";
+
+		$html = str_replace('%name%',$nome_participante, $html);
+		$html = str_replace('%local%', $local_evento, $html);
+		$html = str_replace('%evento%', $nome_evento, $html);
+		$html = str_replace('%data%',$data_evento, $html);
+
 		$pdf = new TCPDF("L", PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		// set document information
 		$pdf->SetCreator("Certified - Certificados Automatizados");
@@ -312,37 +320,20 @@ function areaCadastro($logado){
 			require_once(dirname(__FILE__).'/lang/bra.php');
 			$pdf->setLanguageArray($l);
 		}
-		// ---------------------------------------------------------
-		// set default font subsetting mode
+
 		$pdf->setFontSubsetting(true);
-		// Set font
-		// dejavusans is a UTF-8 Unicode font, if you only need to
-		// print standard ASCII chars, you can use core fonts like
-		// helvetica or times to reduce file size.
+
 		$pdf->SetFont('helvetica', '', 14, '', true);
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
 		$pdf->AddPage();
 		// set text shadow effect
 		$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
-		// Set some content to print
-		$html = file_get_contents('framework/template/pdf/certificado.html');
 
-		$html = str_replace('%name%',$nome_participante, $html);
-		$html = str_replace('%local%', $local_evento, $html);
-		$html = str_replace('%evento%', $nome_evento, $html);
-		$html = str_replace('%data%',$data_evento, $html);
-
-		//echo $html;
-		//die();
-
-		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');
 
-		// ---------------------------------------------------------
-		// Close and output PDF document
-		// This method has several options, check the source code documentation for more information.
 		ob_end_clean();
+
 		$pdf->Output($uuid_participante.'.pdf', 'D');
 	}
 
@@ -378,13 +369,25 @@ function areaCadastro($logado){
 		$result2 = mysqli_query($mysqli,"SELECT * FROM px_participantes WHERE uuid_cert = '$uuid_participante' and ID_evento = '$id_evento'");
 		$participante_data = mysqli_fetch_array($result2);
 
+		$result3= mysqli_query($mysqli,"SELECT * FROM px_templates WHERE ID_evento='$id_evento'");
+		$content_data = mysqli_fetch_array($result3);
+
 		if(mysqli_num_rows($result)>0 and mysqli_num_rows($result2)>0)
-			geraPdf('Marcos A. Caldas',$event_data['nome_evento'],$event_data['nome_evento'],'Evento,Certificado,Direitos Humanos,Debate',$event_data['nome_evento'],$participante_data['nome_participante'],$event_data['local_evento'],'29/09/2014',$participante_data['uuid_cert']);
+			geraPdf($content_data['content'],'Marcos A. Caldas',$event_data['nome_evento'],$event_data['nome_evento'],'Evento,Certificado,Direitos Humanos,Debate',$event_data['nome_evento'],$participante_data['nome_participante'],$event_data['local_evento'],'29/09/2014',$participante_data['uuid_cert']);
 
 		else
 			echo "Erro 404";
 
 	}
+
+	//function mysqli_fetch_all($result){
+      //    while($row = $result->fetch_array())
+		//	{
+		//		$rows[] = $row;
+		//	}
+
+		//	return $rows;
+    //}
 
 	function insereEvento($id_owner,$nome_evento,$data_evento,$duracao_evento,$local_evento){
 		$mysqli = connect_db();
@@ -468,5 +471,20 @@ function areaCadastro($logado){
 		$result = mysqli_query($mysqli,"DELETE FROM px_participantes WHERE ID = '$id_participante' and ID_evento = '$id_evento'");
 
 		return $result;
+	}
+
+	function insereParticipante2($nome_participante,$email_participante,$id_evento){
+
+		$mysqli = connect_db();
+		$uuid_participante = uuidGen();
+
+		$dados_evento = dadosEvento($id_evento);
+
+		$id_evento=$dados_evento['ID'];
+
+		$result = mysqli_query($mysqli,"INSERT INTO px_participantes (`ID_owner` ,`ID_evento` ,`nome_participante` ,`email_participante` ,`uuid_cert`) VALUES ('$id_evento', '$id_evento', '$nome_participante', '$email_participante', '$uuid_participante');");
+
+		return $result;
+
 	}
 ?>
