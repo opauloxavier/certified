@@ -9,11 +9,13 @@ Options All -Indexes
 RewriteBase /certified/
 RewriteRule  ^user/([a-z]+)/?$ user.php?id=$1 [L]
 RewriteRule  ^([0-9a-zA-Z-_]{1,100})/?$ index.php?to=$1 [L]
-RewriteRule  ^ref/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&ref=$1 [L]
-RewriteRule  ^home/ref/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&ref=$1 [L]
-RewriteRule  ^error/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&error=$1 [L]
-RewriteRule  ^sucesso/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&error=$1 [L]
+#RewriteRule ^ref/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&ref=$1 [L]
+#RewriteRule ^home/ref/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&ref=$1 [L]
+#RewriteRule ^error/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&error=$1 [L]
+#RewriteRule ^sucesso/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=home&error=$1 [L]
 RewriteRule  ^import/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=import&id_evento=$1 [L]
 RewriteRule  ^evento/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=evento&id_evento=$1 [L]
+RewriteRule  ^remover/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=remover&id_evento=$1&id_participante=$2 [L]
+RewriteRule  ^envio/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=envio&id_evento=$1 [L]
 RewriteRule  ^certificado/([0-9a-zA-Z-_]{1,100})/([0-9a-zA-Z-_]{1,100})/?$ index.php?to=certificado&evento=$1&particip=$2 [L]
 

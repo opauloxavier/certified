@@ -58,9 +58,10 @@
 			include_once PAGES_URL."import.php";
 		}
 
-		elseif($_GET['to']=='uuid'){
-			include_once PAGES_URL."uuid.php";
+		elseif($_GET['to']=='remover'){
+			include_once PAGES_URL."remover.php";
 		}
+
 
 		else{
 			header("location:".BASE_URL);

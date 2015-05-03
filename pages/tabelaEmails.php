@@ -1,5 +1,5 @@
 <?php
-		if(isset($_POST['submitEvento']) and $_SESSION['logado']){
+		if(isset($_POST['submitCSV']) and $_SESSION['logado']){
 		$array = importCSV($_FILES['nomeFile']['tmp_name']);
 
 		$_SESSION['csvData'] = $array;

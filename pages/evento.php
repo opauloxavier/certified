@@ -8,8 +8,8 @@
 		die ("Mete o pé");
 ?>
 
-<div class="page-header" style="margin-top:80px;">
-  	<h1>Dados do Evento</h1>
+	<div class="page-header" style="margin-top:80px;">
+  		<h1>Dados do Evento</h1>
 	</div>
 	<div class="form-group">
 		<div class="col-md-12">
@@ -20,22 +20,25 @@
 			<p></p>
 		</div>
 	</div>
-	<div class="form-group">
-	 <form class="form-inline" method="POST" action="<?php echo BASE_URL; ?>import/<?php echo $_GET['id_evento']; ?>" id="formCsv" name="formCsv" accept-charset="utf-8" enctype="multipart/form-data">
-	 			<div class="form-group pull-right">
-				 <button type="submit" name="submitLogin" class="btn btn-primary">Importar Contatos</button>
-				 </div>
-				<div class="form-group pull-right">
-					    <div class="col-md-12">
-					    	<input type="file" class="form-control" name="nomeFile" placeholder="Escolha seu arquivo" required="true">
-					    </div>
-				</div>
-	</form>
 
+	<div class="col-md-12">
+		<div class="pull-right">
+			<form class="form-inline" method="POST" action="<?php echo BASE_URL.'import/'.$_GET['id_evento']; ?>" id="formCsv" name="formCsv" accept-charset="utf-8" enctype="multipart/form-data">
+				<div class="form-group">
+						<label class="control-label">Importar CSV</label>
+						<input type="file" class="form-control" id="nome" name="nomeFile" placeholder="Escolha seu arquivo" required="true">
+				</div>
+				<div class="form-group">
+						<button type="submit" name="submitCSV" class="btn btn-default btn-primary">Importar</button>
+				</div>
+			</form>
+		</div>
 	</div>
+		
+</div>
 	<div class="form-group">
 		<div class="col-md-12">
-		<table class="table table-striped" style="margin-top:15px;"><tr><th>Participante</th><th>E-mail</th></tr>	
+		<table class="table table-striped" style="margin-top:15px;"><tr><th>Participante</th><th>E-mail</th><th style='text-align:center;'>Excluir</th></tr>	
 
 <?php	
 
@@ -50,19 +53,18 @@
 				echo "<tr>";
 				echo "<td>".$data_participantes[$i][3]."</td>";
 				echo "<td><a href='mailto:".$data_participantes[$i][4]."'>".$data_participantes[$i][4]."</td></a>";
+				echo "<td style='text-align:center;'><a href='".BASE_URL."remover/".$_GET['id_evento']."/".$data_participantes[$i][0]."' style='display:block; color:red; text-decoration:none; cursor:pointer;' class='glyphicon glyphicon-remove' aria-hidden='true'></a></td>";
 				echo "</tr>";
 		}
 ?>
 
 </table></div></div>
-<div class="col-md-12">
-	<div class="col-md-12">
-		<form class="form-horizontal" method="POST" name="formEnvio">
-			<div class="form-group">
-				<div class="col-md-4 col-md-offset-3">
-					<button type="submit" name="submitEnvio" class="btn btn-lg btn-success btn-block">ENVIAR!</button>
-				</div>
-			</div>
+
+
+<div class="row" style="margin-bottom:10px;">
+	<div class="col-md-2 col-md-offset-3 pull-right">
+		<form class="form-horizontal" method="POST" name="formEnvio" action="<?php echo BASE_URL.'envio/'.$_GET['id_evento']; ?>">
+					<button type="submit" name="submitEnvio" class="btn btn-lg btn-success btn-block">Enviar</button>
 		</form>
 	</div>
 </div>

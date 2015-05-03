@@ -244,13 +244,17 @@ function areaCadastro($logado){
 			//unset($_SESSION['status']);
 	}
 
-	function enviaMail($to,$subject,$evento,$data){
+	function enviaMail($to,$subject,$nome_evento,$data,$uuid_evento,$uuid_participante){
+
+			$url=url.'/certificado/'.$uuid_evento.'/'.$uuid_participante;
 
 			$message = file_get_contents('framework/template/email/certificado.html');
 
 			// Replace the % with the actual information
-			$message = str_replace('%evento%', $evento, $message);
+			$message = str_replace('%evento%', $nome_evento, $message);
 			$message = str_replace('%data%', $data, $message);
+			$message = str_replace('%url%', $url, $message);
+
 
 			$mail = new PHPMailer;
 			$mail->isSMTP();
@@ -339,7 +343,7 @@ function areaCadastro($logado){
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
 		ob_end_clean();
-		$pdf->Output($uuid_participante.'.pdf', 'I');
+		$pdf->Output($uuid_participante.'.pdf', 'D');
 	}
 
 	function importCSV($file_path){
@@ -457,4 +461,12 @@ function areaCadastro($logado){
 		return $result;
 	}
 
+
+	function removeParticipante($id_evento,$id_participante){
+		$mysqli = connect_db();
+
+		$result = mysqli_query($mysqli,"DELETE FROM px_participantes WHERE ID = '$id_participante' and ID_evento = '$id_evento'");
+
+		return $result;
+	}
 ?>
